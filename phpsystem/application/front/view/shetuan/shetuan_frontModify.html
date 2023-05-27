@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
+  <TITLE>修改社团信息</TITLE>
+  <link href="__PUBLIC__/plugins/bootstrap.css" rel="stylesheet">
+  <link href="__PUBLIC__/plugins/bootstrap-dashen.css" rel="stylesheet">
+  <link href="__PUBLIC__/plugins/font-awesome.css" rel="stylesheet">
+  <link href="__PUBLIC__/plugins/animate.css" rel="stylesheet"> 
+</head>
+<body style="margin-top:70px;"> 
+<div class="container">
+{include file="common/header" /}
+	<div class="col-md-9 wow fadeInLeft">
+	<ul class="breadcrumb">
+  		<li><a href="__PUBLIC__/index.php">首页</a></li>
+  		<li class="active">社团信息修改</li>
+	</ul>
+		<div class="row"> 
+      	<form class="form-horizontal" name="shetuanEditForm" id="shetuanEditForm" enctype="multipart/form-data" method="post"  class="mar_t15">
+		  <div class="form-group">
+			 <label for="shetuan_shetuanId_edit" class="col-md-3 text-right">社团id:</label>
+			 <div class="col-md-9"> 
+			 	<input type="text" id="shetuan_shetuanId_edit" name="shetuan_shetuanId" class="form-control" placeholder="请输入社团id" readOnly>
+			 </div>
+		  </div> 
+		  <div class="form-group">
+		  	 <label for="shetuan_shetuanName_edit" class="col-md-3 text-right">社团名称:</label>
+		  	 <div class="col-md-9">
+			    <input type="text" id="shetuan_shetuanName_edit" name="shetuan_shetuanName" class="form-control" placeholder="请输入社团名称">
+			 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="shetuan_shetuanPhoto_edit" class="col-md-3 text-right">社团图片:</label>
+		  	 <div class="col-md-9">
+			    <img  class="img-responsive" id="shetuan_shetuanPhotoImg" border="0px"/><br/>
+			    <input type="hidden" id="shetuan_shetuanPhoto_edit" name="shetuan_shetuanPhoto"/>
+			    <input id="shetuanPhotoFile" name="shetuanPhotoFile" type="file" size="50" />
+		  	 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="shetuan_yxzyObj_yxzyId_edit" class="col-md-3 text-right">所在院系专业:</label>
+		  	 <div class="col-md-9">
+			    <select id="shetuan_yxzyObj_yxzyId_edit" name="shetuan_yxzyObj_yxzyId" class="form-control">
+			    </select>
+		  	 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="shetuan_bornDate_edit" class="col-md-3 text-right">成立日期:</label>
+		  	 <div class="col-md-9">
+                <div class="input-group date shetuan_bornDate_edit col-md-12" data-link-field="shetuan_bornDate_edit" data-link-format="yyyy-mm-dd">
+                    <input class="form-control" id="shetuan_bornDate_edit" name="shetuan_bornDate" size="16" type="text" value="" placeholder="请选择成立日期" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+		  	 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="shetuan_shetuanDesc_edit" class="col-md-3 text-right">社团简介:</label>
+		  	 <div class="col-md-9">
+			    <script name="shetuan_shetuanDesc" id="shetuan_shetuanDesc_edit" type="text/plain"   style="width:100%;height:500px;"></script>
+			 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="shetuan_fuzeren_edit" class="col-md-3 text-right">负责人:</label>
+		  	 <div class="col-md-9">
+			    <input type="text" id="shetuan_fuzeren_edit" name="shetuan_fuzeren" class="form-control" placeholder="请输入负责人">
+			 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="shetuan_telephone_edit" class="col-md-3 text-right">联系电话:</label>
+		  	 <div class="col-md-9">
+			    <input type="text" id="shetuan_telephone_edit" name="shetuan_telephone" class="form-control" placeholder="请输入联系电话">
+			 </div>
+		  </div>
+			  <div class="form-group">
+			  	<span class="col-md-3"></span>
+			  	<span onclick="ajaxShetuanModify();" class="btn btn-primary bottom5 top5">修改</span>
+			  </div>
+		</form> 
+	    <style>#shetuanEditForm .form-group {margin-bottom:5px;}  </style>
+      </div>
+   </div>
+</div>
+
+
+{include file="common/footer" /}
+<script src="__PUBLIC__/plugins/jquery.min.js"></script>
+<script src="__PUBLIC__/plugins/bootstrap.js"></script>
+<script src="__PUBLIC__/plugins/wow.min.js"></script>
+<script src="__PUBLIC__/plugins/bootstrap-datetimepicker.min.js"></script>
+<script src="__PUBLIC__/plugins/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jsdate.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.all.js"> </script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script>
+var shetuan_shetuanDesc_editor = UE.getEditor('shetuan_shetuanDesc_edit'); //社团简介编辑框
+/*弹出修改社团界面并初始化数据*/
+function shetuanEdit(shetuanId) {
+  shetuan_shetuanDesc_editor.addListener("ready", function () {
+    // editor准备好之后才可以使用 
+    ajaxModifyQuery(shetuanId);
+  });
+}
+ function ajaxModifyQuery(shetuanId) {
+	$.ajax({
+		url :  "{:url('Shetuan/update')}?shetuanId=" + shetuanId,
+		type : "get",
+		dataType: "json",
+		success : function (shetuan, response, status) {
+			if (shetuan) {
+				$("#shetuan_shetuanId_edit").val(shetuan.shetuanId);
+				$("#shetuan_shetuanName_edit").val(shetuan.shetuanName);
+				$("#shetuan_shetuanPhoto_edit").val(shetuan.shetuanPhoto);
+				$("#shetuan_shetuanPhotoImg").attr("src", "__PUBLIC__/" +　shetuan.shetuanPhoto);
+				$.ajax({
+					url: "{:url('Yxzy/listAll')}",
+					type: "get",
+					dataType: "json",
+					success: function(yxzys,response,status) { 
+						$("#shetuan_yxzyObj_yxzyId_edit").empty();
+						var html="";
+		        		$(yxzys).each(function(i,yxzy){
+		        			html += "<option value='" + yxzy.yxzyId + "'>" + yxzy.yxzyName + "</option>";
+		        		});
+		        		$("#shetuan_yxzyObj_yxzyId_edit").html(html);
+		        		$("#shetuan_yxzyObj_yxzyId_edit").val(shetuan.yxzyObj);
+					}
+				});
+				$("#shetuan_bornDate_edit").val(shetuan.bornDate);
+				shetuan_shetuanDesc_editor.setContent(shetuan.shetuanDesc, false);
+				$("#shetuan_fuzeren_edit").val(shetuan.fuzeren);
+				$("#shetuan_telephone_edit").val(shetuan.telephone);
+			} else {
+				alert("获取信息失败！");
+			}
+		}
+	});
+}
+
+/*ajax方式提交社团信息表单给服务器端修改*/
+function ajaxShetuanModify() {
+	$.ajax({
+		url :  "{:url('Shetuan/update')}",
+		type : "post",
+		dataType: "json",
+		data: new FormData($("#shetuanEditForm")[0]),
+		success : function (obj, response, status) {
+            if(obj.success){
+                alert("信息修改成功！");
+                location.reload(true);
+                $("#shetuanQueryForm").submit();
+            }else{
+                alert(obj.message);
+            } 
+		},
+		processData: false,
+		contentType: false,
+	});
+}
+
+$(function(){
+        /*小屏幕导航点击关闭菜单*/
+        $('.navbar-collapse a').click(function(){
+            $('.navbar-collapse').collapse('hide');
+        });
+        new WOW().init();
+    /*成立日期组件*/
+    $('.shetuan_bornDate_edit').datetimepicker({
+    	language:  'zh-CN',  //语言
+    	format: 'yyyy-mm-dd',
+    	minView: 2,
+    	weekStart: 1,
+    	todayBtn:  1,
+    	autoclose: 1,
+    	minuteStep: 1,
+    	todayHighlight: 1,
+    	startView: 2,
+    	forceParse: 0
+    });
+    shetuanEdit("{$shetuanId}");
+ })
+ </script> 
+</body>
+</html>
+

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
+  <TITLE>查看帖子详情</TITLE>
+  <link href="__PUBLIC__/plugins/bootstrap.css" rel="stylesheet">
+  <link href="__PUBLIC__/plugins/bootstrap-dashen.css" rel="stylesheet">
+  <link href="__PUBLIC__/plugins/font-awesome.css" rel="stylesheet">
+  <link href="__PUBLIC__/plugins/animate.css" rel="stylesheet"> 
+</head>
+<body style="margin-top:70px;"> 
+{include file="common/header" /}
+<div class="container">
+	<ul class="breadcrumb">
+  		<li><a href="__PUBLIC__/index.php">首页</a></li>
+  		<li><a href="{:url('PostInfo/frontlist')}">帖子信息</a></li>
+  		<li class="active">详情查看</li>
+	</ul>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">帖子id:</div>
+		<div class="col-md-10 col-xs-6">{$postInfo.postInfoId}</div>
+	</div>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">帖子标题:</div>
+		<div class="col-md-10 col-xs-6">{$postInfo.title}</div>
+	</div>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">帖子内容:</div>
+		<div class="col-md-10 col-xs-6">{$postInfo.content}</div>
+	</div>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">浏览量:</div>
+		<div class="col-md-10 col-xs-6">{$postInfo.hitNum}</div>
+	</div>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">发帖人:</div>
+		<div class="col-md-10 col-xs-6">{$postInfo.userObjF.name}</div>
+	</div>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">发帖时间:</div>
+		<div class="col-md-10 col-xs-6">{$postInfo.addTime}</div>
+	</div>
+	<div class="row bottom15">
+		<div class="col-md-2 col-xs-4 text-right bold">评论内容:</div>
+		<div class="col-md-10 col-xs-6">
+			<textarea id="content" style="width:100%" rows=8></textarea>
+		</div>
+	</div>
+
+	<div class="row bottom15">
+		<div class="col-md-2 col-xs-4"></div>
+		<div class="col-md-6 col-xs-6">
+			<button onclick="userReply();" class="btn btn-primary">发布评论</button>
+			<button onclick="history.back();" class="btn btn-info">返回</button>
+		</div>
+	</div>
+	<div class="row bottom15">
+		<div class="col-md-2 col-xs-4 text-right bold"></div>
+		<div class="col-md-8 col-xs-7">
+			{volist name="replyList" id="reply" key="i"}
+			<div class="row" style="margin-top: 20px;">
+				<div class="col-md-2 col-xs-3">
+					<div class="row text-center"><img src="__PUBLIC__/{$reply.userObjF.userPhoto}" style="border: none;width:60px;height:60px;border-radius: 50%;" /></div>
+					<div class="row text-center" style="margin: 5px 0px;">{$reply.userObjF.user_name}</div>
+				</div>
+				<div class="col-md-7 col-xs-5">{$reply.content}</div>
+				<div class="col-md-3 col-xs-4" >{$reply.replyTime}</div>
+			</div>
+
+			{/volist}
+		</div>
+	</div>
+</div> 
+{include file="common/footer" /}
+<script src="__PUBLIC__/plugins/jquery.min.js"></script>
+<script src="__PUBLIC__/plugins/bootstrap.js"></script>
+<script src="__PUBLIC__/plugins/wow.min.js"></script>
+<script>
+
+    function userReply() {
+        var content = $("#content").val();
+        if(content == "") {
+            alert("请输入评论内容");
+            return;
+        }
+
+        $.ajax({
+            url : "{:url('Reply/frontUserAdd')}",
+            type : "post",
+            dataType: "json",
+            data: {
+                "reply_postInfoObj_postInfoId": {$postInfo.postInfoId},
+                "reply_content": content
+            },
+            success : function (data, response, status) {
+                if(data.success){
+                    alert("评论成功~");
+                    location.reload();
+                } else{
+                    alert(data.message);
+                }
+            }
+        });
+    }
+
+$(function(){
+        /*小屏幕导航点击关闭菜单*/
+        $('.navbar-collapse a').click(function(){
+            $('.navbar-collapse').collapse('hide');
+        });
+        new WOW().init();
+ })
+ </script> 
+</body>
+</html>
+

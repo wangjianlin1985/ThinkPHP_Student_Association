@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
+  <TITLE>查看社团详情</TITLE>
+  <link href="__PUBLIC__/plugins/bootstrap.css" rel="stylesheet">
+  <link href="__PUBLIC__/plugins/bootstrap-dashen.css" rel="stylesheet">
+  <link href="__PUBLIC__/plugins/font-awesome.css" rel="stylesheet">
+  <link href="__PUBLIC__/plugins/animate.css" rel="stylesheet"> 
+</head>
+<body style="margin-top:70px;"> 
+{include file="common/header" /}
+<div class="container">
+	<ul class="breadcrumb">
+  		<li><a href="__PUBLIC__/index.php">首页</a></li>
+  		<li><a href="{:url('Shetuan/frontlist')}">社团信息</a></li>
+  		<li class="active">详情查看</li>
+	</ul>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">社团id:</div>
+		<div class="col-md-10 col-xs-6">{$shetuan.shetuanId}</div>
+	</div>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">社团名称:</div>
+		<div class="col-md-10 col-xs-6">{$shetuan.shetuanName}</div>
+	</div>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">社团图片:</div>
+		<div class="col-md-10 col-xs-6"><img class="img-responsive" src="__PUBLIC__/{$shetuan.shetuanPhoto}"  border="0px"/></div>
+	</div>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">所在院系专业:</div>
+		<div class="col-md-10 col-xs-6">{$shetuan.yxzyObjF.yxzyName}</div>
+	</div>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">成立日期:</div>
+		<div class="col-md-10 col-xs-6">{$shetuan.bornDate}</div>
+	</div>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">社团简介:</div>
+		<div class="col-md-10 col-xs-6">{$shetuan.shetuanDesc}</div>
+	</div>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">负责人:</div>
+		<div class="col-md-10 col-xs-6">{$shetuan.fuzeren}</div>
+	</div>
+	<div class="row bottom15"> 
+		<div class="col-md-2 col-xs-4 text-right bold">联系电话:</div>
+		<div class="col-md-10 col-xs-6">{$shetuan.telephone}</div>
+	</div>
+	<div class="row bottom15">
+		<div class="col-md-2 col-xs-4"></div>
+		<div class="col-md-6 col-xs-6">
+			<button onclick="shenqing();" class="btn btn-primary">申请入团</button>&nbsp;&nbsp;
+			<button onclick="history.back();" class="btn btn-info">返回</button>
+		</div>
+	</div>
+</div> 
+{include file="common/footer" /}
+<script src="__PUBLIC__/plugins/jquery.min.js"></script>
+<script src="__PUBLIC__/plugins/bootstrap.js"></script>
+<script src="__PUBLIC__/plugins/wow.min.js"></script>
+<script>
+
+function shenqing() {
+    $.ajax({
+        url : "{:url('Shenqing/frontUserAdd')}",
+        type : "post",
+        dataType: "json",
+        data: {
+            "shenqing_shetuanObj_shetuanId": {$shetuan.shetuanId},
+        },
+        success : function (data, response, status) {
+            if(data.success){
+                alert("申请成功~");
+                location.reload();
+            } else{
+                alert(data.message);
+            }
+        }
+    });
+}
+$(function(){
+        /*小屏幕导航点击关闭菜单*/
+        $('.navbar-collapse a').click(function(){
+            $('.navbar-collapse').collapse('hide');
+        });
+        new WOW().init();
+ })
+ </script> 
+</body>
+</html>
+
